@@ -48,11 +48,14 @@ jobs:
       - name: Configure CMake
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
+        env:
+          CC: clang-14
+          CXX: clang++-14
 
       - name: Build
         run: cmake --build build --config Release
 
-#      - name: Pack Ubuntu-QtReadElf-withQtEnv
+      #      - name: Pack Ubuntu-QtReadElf-withQtEnv
 #        run: |
 #          touch {{github.workspace}}/default.desktop
 #          > {{github.workspace}}/default.desktop
