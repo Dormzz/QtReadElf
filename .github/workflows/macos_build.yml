@@ -2,11 +2,15 @@
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
 name: Macos Build
 
+#on:
+#  push:
+#    branches: [ "dev" ]
+#  pull_request:
+#    branches: [ "dev" ]
 on:
   push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -39,9 +43,9 @@ jobs:
           - os: macos-latest
             c_compiler: clang
             cpp_compiler: clang++
-#          - os: macos-latest
-#            c_compiler: gcc
-#            cpp_compiler: g++
+        #          - os: macos-latest
+        #            c_compiler: gcc
+        #            cpp_compiler: g++
         exclude:
           #          - os: windows-latest
           #            c_compiler: gcc
