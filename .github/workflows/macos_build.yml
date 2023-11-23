@@ -9,8 +9,11 @@ name: Macos Build
 #    branches: [ "dev" ]
 on:
   push:
+    branches: [ "dev" ]
     tags:
       - 'v*'
+  pull_request:
+    branches: [ "dev" ]
 
 jobs:
   build:
