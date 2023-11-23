@@ -47,8 +47,8 @@ jobs:
           sudo apt install qtbase5-dev qt5-qmake
       - name: Set C++20 compiler option
         run: |
-          echo "export CXX=/usr/bin/clang++-14" >> $GITHUB_ENV
-          echo "export CC=/usr/bin/clang-14" >> $GITHUB_ENV
+          echo "export CXX=/usr/bin/clang++-13" >> $GITHUB_ENV
+          echo "export CC=/usr/bin/clang-13" >> $GITHUB_ENV
       - name: Configure CMake
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
