@@ -1,0 +1,27 @@
+name: Check Ubuntu Environment
+runs-on: ubuntu-latest
+steps:
+  - name: Check qtbase5-dev exists
+    run: dpkg -l | grep -qw qtbase5-dev || echo "Package not found"
+    id: install qtbase5-dev
+  - name: Install qtbase5-dev
+    if: steps.install_package.run == 'Package not found'
+    run: sudo apt-get update && sudo apt-get install -y qtbase5-dev
+  - name: Check qtbase5-dev-tools exists
+    run: dpkg -l | grep -qw qtbase5-dev-tools || echo "Package not found"
+    id: install qtbase5-dev-tools
+  - name: Install qtbase5-dev-tools
+    if: steps.install_package.run == 'Package not found'
+    run: sudo apt-get update && sudo apt-get install -y qtbase5-dev-tools
+  - name: Check qt5-qmake exists
+    run: dpkg -l | grep -qw qt5-qmake || echo "Package not found"
+    id: install qt5-qmake
+  - name: Install qt5-qmake
+    if: steps.install_package.run == 'Package not found'
+    run: sudo apt-get update && sudo apt-get install -y qt5-qmake
+  - name: Check build-essential exists
+    run: dpkg -l | grep -qw build-essential || echo "Package not found"
+    id: install build-essential
+  - name: Install qt5-qmake
+    if: steps.install_package.run == 'Package not found'
+    run: sudo apt-get update && sudo apt-get install -y build-essential
