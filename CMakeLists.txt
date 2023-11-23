@@ -42,6 +42,8 @@ elseif (UNIX)
     target_link_libraries(QtReadELF
             ${QT5_LIBRARIES}
     )
+    add_custom_command(TARGET QtReadELF POST_BUILD
+            COMMAND /usr/local/opt/qt@5/bin/macdeployqt ${CMAKE_BINARY_DIR}/QtReadELF.app -dmg)
 elseif (WIN32)
     add_executable(QtReadELF
             ${PROJECT_FILES}

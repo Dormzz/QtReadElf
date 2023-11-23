@@ -1,0 +1,95 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: Ubuntu Build
+
+on:
+  push:
+    branches: [ "dev" ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        build_type: [ Release ]
+        c_compiler: [  clang ]
+        include:
+          - os: ubuntu-latest
+            c_compiler: clang
+            cpp_compiler: clang++
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set reusable strings
+        # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+      - name: Install Qt on Ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt update
+          sudo apt install qt5-default
+
+      - name: Configure mac CMake
+        run: |
+          export CMAKE_PREFIX_PATH=$(brew --prefix qt5)
+          cmake -B build -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: upload Ubuntu-QtReadELF-withQtEnv
+        uses: actions/upload-artifact@v2
+        with:
+          name: Ubuntu-QtReadELF-withQtEnv
+          path: ${{github.workspace}}/build/QtReadELF.dmg
+
+      - name: upload Ubuntu-QtReadELF
+        uses: actions/upload-artifact@v2
+        with:
+          name: Ubuntu-QtReadELF
+          path: ${{github.workspace}}/build/QtReadELF
+
+  release:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload QtReadELF with QT env
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{github.workspace}}/build/QtReadELF.dmg
+          asset_name: QtReadELF.dmg
+          asset_content_type: application/x-diskcopy
+      - name: Upload QtReadELF without QT env
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{github.workspace}}/build/QtReadELF.app/Contents/MacOS/QtReadELF
+          asset_name: QtReadELF
+          asset_content_type: application/x-diskcopy
