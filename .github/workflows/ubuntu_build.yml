@@ -45,6 +45,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install qtbase5-dev qt5-qmake
+      - name: Set C++20 compiler option
+        run: echo "::add-path::/usr/bin/clang++-14"
       - name: Configure CMake
         run: |
           cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
