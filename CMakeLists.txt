@@ -19,7 +19,7 @@ set(PROJECT_FILES
         main.cpp
         testui.cpp
         testui.h
-        testui.ui
+        TestUI.ui
 )
 
 
@@ -37,6 +37,7 @@ if (APPLE)
 elseif (UNIX)
     add_executable(QtReadELF
             ${PROJECT_FILES}
+            ${UI_HEADERS}
     )
     set(QT5_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
     target_link_libraries(QtReadELF
