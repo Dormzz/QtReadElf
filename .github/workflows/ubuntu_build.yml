@@ -39,10 +39,9 @@ jobs:
         run: |
           sudo apt update
           sudo apt install qtbase5-dev qt5-qmake
-#      - name: Configure CMake
-#        run: |
-#          export CMAKE_PREFIX_PATH=$(brew --prefix qt5)
-#          cmake -B build -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
+      - name: Configure CMake
+        run: |
+          cmake -B build -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
 
       - name: Build
         run: cmake --build build --config Release
