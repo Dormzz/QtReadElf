@@ -19,7 +19,7 @@ set(PROJECT_FILES
         main.cpp
         testui.cpp
         testui.h
-        testui.ui
+        TestUI.ui
 )
 
 
