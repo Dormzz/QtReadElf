@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Set up C++ compiler
-        uses: actions/setup-cpp@v2
+        uses: Trass3r/setup-cpp@master
         with:
           compiler: 'clang++-12'
       - uses: actions/checkout@v3
