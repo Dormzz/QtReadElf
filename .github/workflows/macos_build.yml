@@ -94,3 +94,36 @@ jobs:
         with:
           name: Mac-QtReadELF
           path: ${{github.workspace}}/build/QtReadELF.app/Contents/MacOS/QtReadELF
+  release:
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload QtReadELF with QT env
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{github.workspace}}/build/QtReadELF.dmg
+          asset_name: QtReadELF.dmg
+          asset_content_type: application/x-diskcopy
+      - name: Upload QtReadELF without QT env
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{github.workspace}}/build/QtReadELF.app/Contents/MacOS/QtReadELF
+          asset_name: QtReadELF
+          asset_content_type: application/x-diskcopy
