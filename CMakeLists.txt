@@ -46,31 +46,9 @@ if (UNIX)
         target_link_libraries(${TOOL_NAME}
                 ${QT5_LIBRARIES}
         )
-        # 添加一个自定义目标
-#        add_custom_target(PackUbuntu${TOOL_NAME}WithQtEnv ALL)
-
         file(WRITE "${CMAKE_BINARY_DIR}/default.desktop" "[Desktop Entry]\nType=Application\nName=${TOOL_NAME}\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;\n")
 
-        # 添加自定义命令
-#        add_custom_command(
-#                TARGET PackUbuntu${TOOL_NAME}WithQtEnv
-#                POST_BUILD
-#                COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/default.desktop"
-#                COMMAND chmod +x ${CMAKE_BINARY_DIR}/../linux-pack/hhh
-#                COMMAND ${CMAKE_BINARY_DIR}/../linux-pack/linuxdeployqt-continuous-x86_64.AppImage ${CMAKE_BINARY_DIR}/${TOOL_NAME} -appimage
-#                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#        )
-#        add_custom_command(TARGET PackUbuntu${TOOL_NAME}WithQtEnv
-#                POST_BUILD
-#                COMMAND /bin/bash /home/dormz/CLionProjects/QtReadElf/linux-pack/pack.sh
-#        )
         add_custom_target(PackUbuntu${TOOL_NAME}WithQtEnv ALL
-#                COMMAND /bin/bash /home/dormz/CLionProjects/QtReadElf/linux-pack/pack.sh
-#                COMMAND ${CMAKE_COMMAND} -E rm "${CMAKE_BINARY_DIR}/default.desktop"
-#                COMMAND ${CMAKE_COMMAND} -E touch "${CMAKE_BINARY_DIR}/default.desktop"
-#                COMMAND /bin/bash -c "echo -n > ${CMAKE_BINARY_DIR}/default.desktop"
-#                COMMAND ${CMAKE_COMMAND} -E echo "[Desktop Entry]\nType=Application\nName=QtReadELF\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;" > "${CMAKE_BINARY_DIR}/default.desktop"
-#                COMMAND chmod +x ${CMAKE_BINARY_DIR}/../linux-pack/hhh
                 COMMAND ${CMAKE_BINARY_DIR}/../linux-pack/linuxdeployqt-continuous-x86_64.AppImage ${CMAKE_BINARY_DIR}/${TOOL_NAME} -appimage
                 COMMAND /bin/bash -c "mv ${TOOL_NAME}-*.AppImage ${TOOL_NAME}-WithQtEnv.AppImage"
                 WORKING_DIRECTORY ${CMAKE_BINARY_DIR}

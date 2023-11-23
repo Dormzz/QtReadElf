@@ -50,13 +50,13 @@ jobs:
       - name: Build
         run: cmake --build build --config Release
 
-      - name: Pack Ubuntu-QtReadElf-withQtEnv
-        run: |
-          touch {{github.workspace}}/default.desktop
-          > {{github.workspace}}/default.desktop
-          echo "[Desktop Entry]\nType=Application\nName=QtReadELF\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;" >{{github.workspace}}/default.desktop 
-          ${{github.workspace}}/../linux-pack/linuxdeployqt-continuous-x86_64.AppImage QtReadELF -appimage
-          mv QtReadELF-*.AppImage QtReadELF-WithQtEnv.AppImage
+#      - name: Pack Ubuntu-QtReadElf-withQtEnv
+#        run: |
+#          touch {{github.workspace}}/default.desktop
+#          > {{github.workspace}}/default.desktop
+#          echo "[Desktop Entry]\nType=Application\nName=QtReadELF\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;" >{{github.workspace}}/default.desktop
+#          ${{github.workspace}}/../linux-pack/linuxdeployqt-continuous-x86_64.AppImage QtReadELF -appimage
+#          mv QtReadELF-*.AppImage QtReadELF-WithQtEnv.AppImage
       - name: Upload Ubuntu-QtReadELF-withQtEnv
         uses: actions/upload-artifact@v2
         with:
