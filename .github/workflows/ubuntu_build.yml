@@ -50,9 +50,15 @@ jobs:
 
       - name: upload Ubuntu-QtReadELF-withQtEnv
         uses: actions/upload-artifact@v2
+        run: |
+          touch {{github.workspace}}/default.desktop
+          > {{github.workspace}}/default.desktop
+          echo "[Desktop Entry]\nType=Application\nName=QtReadELF\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;" >{{github.workspace}}/default.desktop 
+          ${{github.workspace}}/../linux-pack/linuxdeployqt-continuous-x86_64.AppImage QtReadELF -appimage
+          mv QtReadELF-*.AppImage QtReadELF-WithQtEnv.AppImage
         with:
           name: Ubuntu-QtReadELF-withQtEnv
-          path: ${{github.workspace}}/build/QtReadELF.dmg
+          path: ${{github.workspace}}/build/QtReadELF-WithQtEnv.AppImage
 
       - name: upload Ubuntu-QtReadELF
         uses: actions/upload-artifact@v2
@@ -81,8 +87,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{github.workspace}}/build/QtReadELF.dmg
-          asset_name: QtReadELF.dmg
+          asset_path: ${{github.workspace}}/build/QtReadELF-WithQtEnv.AppImage
+          asset_name: QtReadELF-WithQtEnv.AppImage
           asset_content_type: application/x-diskcopy
       - name: Upload QtReadELF without QT env
         uses: actions/upload-release-asset@v1
@@ -90,6 +96,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{github.workspace}}/build/QtReadELF.app/Contents/MacOS/QtReadELF
+          asset_path: ${{github.workspace}}/build/QtReadELF
           asset_name: QtReadELF
           asset_content_type: application/x-diskcopy
