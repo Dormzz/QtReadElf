@@ -33,7 +33,10 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
+      - name: Set up CMake
+        uses: martinlindhe/cmake-action@v1
+        with:
+          cmake-args: -DCMAKE_CXX_STANDARD=20
       - name: Install Qt on Ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
