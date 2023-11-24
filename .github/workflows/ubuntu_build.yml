@@ -17,11 +17,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ ubuntu-20.04 ]
         build_type: [ Release ]
         c_compiler: [  clang ]
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             c_compiler: clang
             cpp_compiler: clang++
 
@@ -41,7 +41,7 @@ jobs:
           clang --version
           clang++ --version
       - name: Install Qt on Ubuntu
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt update
           sudo apt install qtbase5-dev qt5-qmake
