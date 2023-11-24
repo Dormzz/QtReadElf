@@ -33,12 +33,11 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-
       - name: Install Clang
         run: |
           sudo apt update
           sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
-#          sudo apt install clang lldb lld libc++-dev -y
+          sudo apt install clang lldb lld libc++-dev -y 
           clang --version
           clang++ --version
       - name: Install Qt on Ubuntu
