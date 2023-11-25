@@ -11,13 +11,6 @@ set(CMAKE_AUTOUIC ON)
 
 # windos 需要设置环境变量 Qt6_DIR=C:\Qt\6.6.1\mingw_64
 
-find_package(Qt6Widgets REQUIRED)
-find_package(Qt6 COMPONENTS
-        Core
-        Gui
-        Widgets
-        REQUIRED)
-
 set(PROJECT_FILES
         main.cpp
         testui.cpp
@@ -28,6 +21,12 @@ set(PROJECT_FILES
 
 if (UNIX)
     if (APPLE)
+        find_package(Qt6Widgets REQUIRED)
+        find_package(Qt6 COMPONENTS
+                Core
+                Gui
+                Widgets
+                REQUIRED)
         add_executable(${EXENAME} MACOSX_BUNDLE
                 ${PROJECT_FILES}
         )
@@ -41,12 +40,18 @@ if (UNIX)
         add_custom_command(TARGET ${EXENAME} POST_BUILD
                 COMMAND /usr/local/opt/qt@6/bin/macdeployqt ${CMAKE_BINARY_DIR}/${EXENAME}.app -dmg)
     else ()
+        find_package(Qt5Widgets REQUIRED)
+        find_package(Qt5 COMPONENTS
+                Core
+                Gui
+                Widgets
+                REQUIRED)
         add_executable(${EXENAME}
                 ${PROJECT_FILES}
         )
-        set(QT6_LIBRARIES Qt6::Core Qt6::Gui Qt6::Widgets)
+        set(QT5_LIBRARIES Qt5::Core Qt5::Gui Qt5::Widgets)
         target_link_libraries(${EXENAME}
-                ${QT6_LIBRARIES}
+                ${QT5_LIBRARIES}
         )
         file(WRITE "${CMAKE_BINARY_DIR}/default.desktop" "[Desktop Entry]\nType=Application\nName=${EXENAME}\nExec=AppRun %F\nIcon=default\nComment=Edit this default file\nTerminal=true\nCategories=Application;\n")
 
@@ -61,6 +66,12 @@ if (UNIX)
 
     endif ()
 elseif (WIN32)
+    find_package(Qt6Widgets REQUIRED)
+    find_package(Qt6 COMPONENTS
+            Core
+            Gui
+            Widgets
+            REQUIRED)
     add_executable(${EXENAME}
             ${PROJECT_FILES}
     )
