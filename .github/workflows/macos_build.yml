@@ -74,7 +74,7 @@ jobs:
       - name: Install Qt on macOS
         if: matrix.os == 'macos-latest'
         run: |
-          brew install qt5
+          brew install qt6
           brew install coreutils
           QT_INSTALL_PATH=$(greadlink -f $(brew --prefix qt))
           echo "QT_INSTALL_PATH=$QT_INSTALL_PATH" >> $GITHUB_ENV
@@ -84,7 +84,7 @@ jobs:
 
       - name: Configure mac CMake
         run: |
-          export CMAKE_PREFIX_PATH=$(brew --prefix qt5)
+          export CMAKE_PREFIX_PATH=$(brew --prefix qt6)
           cmake -B build -DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -S .
 
       - name: Build
