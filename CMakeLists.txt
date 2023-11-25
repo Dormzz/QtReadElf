@@ -36,7 +36,7 @@ if (UNIX)
                 ${QT6_LIBRARIES}
         )
         # 假如mac安装了 binutils 后，里面的strip工具会和 xcode的工具重名，导致打包冲突，需要修改 binutils的strip名字为其他名字才行
-        set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
+#        set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
         add_custom_command(TARGET ${EXENAME} POST_BUILD
                 COMMAND /usr/local/opt/qt@6/bin/macdeployqt ${CMAKE_BINARY_DIR}/${EXENAME}.app -dmg)
     else ()
