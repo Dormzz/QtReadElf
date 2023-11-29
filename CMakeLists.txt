@@ -16,6 +16,7 @@ set(PROJECT_FILES
         testui.cpp
         testui.h
         TestUI.ui
+        seg.h
 )
 
 
