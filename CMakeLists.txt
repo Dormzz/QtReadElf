@@ -13,9 +13,9 @@ set(CMAKE_AUTOUIC ON)
 
 set(PROJECT_FILES
         main.cpp
-        testui.cpp
-        testui.h
-        TestUI.ui
+        mainui.cpp
+        mainui.h
+        MainUI.ui
 )
 
 

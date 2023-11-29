@@ -1,13 +1,13 @@
 
 #include <QApplication>
 #include <iostream>
-#include "testui.h"
+#include "mainui.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a (argc, argv);
-    std::cout << "Hello, World!" << std::endl;
-    TestUI testUi;
-    testUi.show();
+    qInfo() << "QtReadElf 工具.";
+    MainUI mainUi;
+    mainUi.show();
     return QApplication::exec ();
 }
