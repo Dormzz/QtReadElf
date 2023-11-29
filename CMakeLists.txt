@@ -13,10 +13,9 @@ set(CMAKE_AUTOUIC ON)
 
 set(PROJECT_FILES
         main.cpp
-        testui.cpp
-        testui.h
-        TestUI.ui
-        seg.h
+        mainui.cpp
+        mainui.h
+        MainUI.ui
 )
 
 
@@ -86,7 +85,7 @@ elseif (WIN32)
             POST_BUILD
             COMMAND $ENV{Qt6_DIR}/bin/windeployqt.exe --dir ${CMAKE_BINARY_DIR}/${EXENAME} ${CMAKE_BINARY_DIR}/${EXENAME}.exe
             COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/${EXENAME}.exe" "${CMAKE_BINARY_DIR}/${EXENAME}"
-            COMMAND powershell -Command "Compress-Archive -Path '${CMAKE_BINARY_DIR}/${EXENAME}' -DestinationPath '${CMAKE_BINARY_DIR}/${EXENAME}_With_QTEnv.zip'"
+            COMMAND powershell -Command "Compress-Archive -Path '${CMAKE_BINARY_DIR}/${EXENAME}' -Force -DestinationPath  '${CMAKE_BINARY_DIR}/${EXENAME}_With_QTEnv.zip'"
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 
