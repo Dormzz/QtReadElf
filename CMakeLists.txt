@@ -4,7 +4,9 @@ project(QtReadELF)
 set(EXENAME QtReadELF)
 
 set(CMAKE_CXX_STANDARD 20)
-
+#编译缓存
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+#qt 自动生成选项
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -27,18 +29,34 @@ if (UNIX)
                 Gui
                 Widgets
                 REQUIRED)
-        add_executable(${EXENAME} MACOSX_BUNDLE
-                ${PROJECT_FILES}
-        )
-
         set(QT6_LIBRARIES Qt6::Core Qt6::Gui Qt6::Widgets)
-        target_link_libraries(${EXENAME}
-                ${QT6_LIBRARIES}
-        )
-        # 假如mac安装了 binutils 后，里面的strip工具会和 xcode的工具重名，导致打包冲突，需要修改 binutils的strip名字为其他名字才行
-#        set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
-        add_custom_command(TARGET ${EXENAME} POST_BUILD
-                COMMAND /usr/local/opt/qt@6/bin/macdeployqt ${CMAKE_BINARY_DIR}/${EXENAME}.app -dmg)
+        if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+            add_executable(${EXENAME}
+                    ${PROJECT_FILES}
+            )
+            target_link_libraries(${EXENAME}
+                    ${QT6_LIBRARIES}
+            )
+        elseif (CMAKE_BUILD_TYPE STREQUAL "Release")
+            # 编译优化对qt最终打包的体积缩减帮助不大。
+#            set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Oz -ffunction-sections -fdata-sections")
+#            set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -Oz -ffunction-sections -fdata-sections")
+            add_executable(${EXENAME} MACOSX_BUNDLE
+                    ${PROJECT_FILES}
+            )
+            target_link_libraries(${EXENAME}
+                    ${QT6_LIBRARIES}
+            )
+            # 假如mac安装了 binutils 后，里面的strip工具会和 xcode的工具重名，导致打包冲突，需要修改 binutils的strip名字为其他名字才行
+            #        set(CMAKE_INSTALL_RPATH "@executable_path/../Frameworks")
+            add_custom_command(TARGET ${EXENAME} POST_BUILD
+                    COMMAND /usr/local/opt/qt@6/bin/macdeployqt ${CMAKE_BINARY_DIR}/${EXENAME}.app -dmg
+            )
+
+            add_custom_command(TARGET ${EXENAME} PRE_BUILD
+                    COMMAND rm -rf  ${CMAKE_BINARY_DIR}/${EXENAME}.dmg
+            )
+        endif ()
     else ()
         find_package(Qt5Widgets REQUIRED)
         find_package(Qt5 COMPONENTS
